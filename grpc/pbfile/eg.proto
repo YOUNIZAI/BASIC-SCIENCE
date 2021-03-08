@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package crs;
+
+service CrsService {
+	rpc StoreChargingRecord (StoreChargingRecordReqMsg) returns (CommonRspMsg) {}     // smf req crs to store charging records
+	rpc NotifyChfAvailability (NotifyChfAvailabilityReqMsg) returns (CommonRspMsg) {} // smf notify crs which chf is availability
+}
+
+message StoreChargingRecordReqMsg {
+	uint32                chargingId           = 1;
+	string                primaryChfAddress    = 2; // primary chf uri
+	string                secondaryChfAddress  = 3; // secondary chf uri
+	string                chargingReference    = 4; // if don't establish session with chf, this value will be ""
+	repeated ChargingReq  chargingDataReqSlice = 5; // packed nchf defined charging data request, the slice is already order by sequence number which is included in req
+	NchfApiVersion        nchfApiVersion       = 6; // nchf api version
+}
+
+message NotifyChfAvailabilityReqMsg {
+	string                chfAddress           = 1; // which chf is from down to up
+}
+
+message CommonRspMsg {
+	CRS_STATUS    result          = 1; //
+}
+
+// the status code can add when need
+enum CRS_STATUS {
+	CRS_SUCCESS      = 0; // success
+	CRS_FAIL         = 1; // fail
+}
+
+message ChargingReq {
+	bytes                 failReq              = 1;
+	ChargingReqType       reqType              = 2;
+}
+
+// charging data req type, must be same with smf
+enum ChargingReqType {
+	unknow         = 0; // unknow type
+	create         = 1; // create_charging
+	update         = 2; // update_charging
+	release        = 3; // release_charging
+}
+
+// nchf api version
+enum NchfApiVersion {
+	V1             = 0; // r15 v1
+	V2             = 1; // r16 v2
+}
