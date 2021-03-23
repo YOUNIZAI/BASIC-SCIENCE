@@ -1,0 +1,23 @@
+//是个很好我国
+
+syntax = "proto3";
+option go_package = "pbfile";
+package helloworld;
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  // 建议驼峰式
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+// 从 1111 开始
+  string name = 1;  // 从 1 开始
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}

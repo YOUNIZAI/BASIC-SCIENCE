@@ -2,8 +2,7 @@
 
 // 指定的当前proto语法的版本，有2和3
 syntax = "proto3";
-
-// 指定等会文件生成出来的package
+option go_package = "pbfile";
 package service;
 
 // 定义request
